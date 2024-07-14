@@ -17,8 +17,11 @@ import {
 } from "@mui/material";
 
 import sampleData from "./assets/data/sample-data.json";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-const RecentActivity = () => {
+const RecentActivityTableContent = () => {
+
+  
   const [data, setData] = useState<any | null>(null);
 
   useEffect(() => {
@@ -33,17 +36,19 @@ const RecentActivity = () => {
     }
   }, []);
 
-  //console.log("Data", data);
+
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <Typography variant="h6" gutterBottom>
+      <TableContainer component={Paper} style={{borderRadius:"20px", backgroundColor:"#F5F5F5"}}>
+        <Typography variant="h6" style={{marginLeft:"2%"}}>
           Activity Table
         </Typography>
+        <br />
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>{" "}</TableCell>
               <TableCell>Users</TableCell>
               <TableCell>Activite days</TableCell>
               <TableCell>Day wise Activity</TableCell>
@@ -53,10 +58,11 @@ const RecentActivity = () => {
           <TableBody>
             {data &&
               data.rows &&
-              data.rows.map((row) => {
+              data.rows.map((row,ind) => {
                 return (
                   <>
-                    <TableRow key={row.name}>
+                    <TableRow key={ind}>
+                     <TableCell><AccountCircleIcon/></TableCell>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.activeDays.days}</TableCell>
                       <TableCell>{row.dayWiseActivity.length}</TableCell>
@@ -72,4 +78,4 @@ const RecentActivity = () => {
   );
 };
 
-export default RecentActivity;
+export default RecentActivityTableContent;

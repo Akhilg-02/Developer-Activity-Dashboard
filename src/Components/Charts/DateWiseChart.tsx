@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { colors, Grid, Paper, Typography } from "@mui/material";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -9,6 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  PointElement
 } from "chart.js/auto";
 import { useActivityContext } from "../Context/ActivityProvider";
 
@@ -17,6 +18,7 @@ ChartJS.register(
   LinearScale,
   LineElement,
   ArcElement,
+  PointElement,
   Title,
   Tooltip,
   Legend
@@ -26,10 +28,14 @@ const DateWiseChart = () => {
   const { selectedData } = useActivityContext();
   //console.log("Sleelcted",selectedData);
   
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${day}/${month}/${year}`;
+  };
 
-  const dates = selectedData.dayWiseActivity.map(
-    (dayActivity) => dayActivity.date
-  );
+  const dates = selectedData.dayWiseActivity.map(dayActivity => formatDate(dayActivity.date));
+
+
 
   const getCountsForLabel = (label) => {
     return selectedData.dayWiseActivity.map((dayActivity) => {
@@ -55,7 +61,7 @@ const DateWiseChart = () => {
     borderColor: labelInfo.borderColor,
     fill: false,
     borderWidth: 2,
-    //pointRadius: 3,
+    pointRadius: 3,
     pointHoverRadius: 5,
     showLine: true,
   }));
@@ -73,24 +79,26 @@ const DateWiseChart = () => {
       x: {
         title: {
           display: true,
-          text: 'Date' // Title for the x-axis
+          text: "Date's",
         },
-        // ticks: {
-        //   callback: function(value: string, index: any, values: any) {
-        //     return value.split("-").reverse().join("/"); // Format date if needed
-        //   },
-        //   autoSkip: false,
-        //   maxRotation: 0,
-        //   minRotation: 0,
-        //   align: 'start', // Align the labels vertically
-        //   crossAlign: 'near', // Further aligns the labels vertically
-        // }
+        grid: {
+          display: false,
+        },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 80, 
+          minRotation: 80, 
+        }
       },
       y: {
         title: {
           display: true,
-          text: 'Count' // Title for the y-axis
-        }
+          text: "Count's"
+        },
+        border:{
+          dash:[5, 5],
+          //color:"white"
+        },
       }
     },
     plugins: {
@@ -99,15 +107,26 @@ const DateWiseChart = () => {
       },
     }
   };
-
   return (
-    <Grid item xs={12}>
-      <Paper elevation={3} style={{ padding: "12px", width: "60%",  }}>
+    <>
+    <Grid item>
+      <Paper elevation={3} style={{ padding: "12px", borderRadius:"20px", backgroundColor:"rgb(167 60 243 / 10%)"}}>
+       <Typography variant="h6" style={{marginLeft:"2%"}}>Day Wise Activity</Typography>
+       <br />
+        <Line options={options} data={lineChartsData} style={{height:"250vh"}} />
+      </Paper>
+    </Grid>
+    </>
+  );
+};
+
+{/* <Grid item xs={12}>eight:"100vh"
+      <Paper elevation={3} style={{ padding: "12px", width: "60%", borderRadius:"20px"}}>
        <Typography variant="h6">Day Wise Activity</Typography>
         <Line options={options} data={lineChartsData} style={{height:"150vh"}} />
       </Paper>
-    </Grid>
-  );
-};
+    </Grid> */}
+
+
 
 export default DateWiseChart;
