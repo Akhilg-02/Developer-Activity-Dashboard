@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import {
@@ -20,7 +21,7 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MainContent from "./MainContent";
-import { useState } from "react";
+import AttractionsIcon from '@mui/icons-material/Attractions';
 
 
 const drawerWidth = 200;
@@ -130,8 +131,14 @@ const Navbar = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Dashboard
+          <Typography variant="h6" noWrap component="div" sx={{color:"violet", display:"flex"}}>
+            <span>
+              <AttractionsIcon sx={{fontSize:"60px"}}/> 
+            </span>
+            <span style={{margin:"15px"}}>
+              Dashboard 
+            </span>
+            
           </Typography>
         </Toolbar>
       </AppBar>
@@ -178,7 +185,6 @@ const Navbar = () => {
             </ListItem>
           ))}
         </List>
-        {/* <Divider /> */}
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />

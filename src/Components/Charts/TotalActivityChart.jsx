@@ -32,15 +32,30 @@ const TotalActivityChart = () => {
       <Grid xs={12}>
         <Paper
           elevation={3}
-          style={{ padding: "8px", width: "100%", borderRadius: "20px", marginLeft:'1',backgroundColor:"#F5F5F5" }}
+          style={{
+            padding: "8px",
+            width: "100%",
+            borderRadius: "20px",
+            marginLeft: "1",
+            backgroundColor: "rgb(167 60 243 / 10%)",
+          }}
         >
-          <Typography variant="h6" style={{marginLeft:"2%"}}>Total Activity</Typography>
+          <Typography
+            variant="h6"
+            style={{ marginLeft: "2%", color: "violet" }}
+          >
+            Total activity for different requests
+          </Typography>
           <br />
-          <Grid container spacing={3} style={{ display: "flex",justifyContent:"center" }}>
-            <Grid item xs={12} sm={6} md={6} lg={6}>
+          <Grid
+            container
+            spacing={3}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <Grid item xs={12} sm={6} md={6} lg={5}>
               <PolarChart />
             </Grid>
-            <Grid item xs={12} sm={6} md={6} lg={6}>
+            <Grid item xs={12} sm={6} md={6} lg={7}>
               <BarChart />
             </Grid>
           </Grid>
@@ -71,11 +86,6 @@ const PolarChart = () => {
           "#0396A6",
           "#5F50A9",
           "#8F3519",
-          // "rgb(255, 99, 132)",
-          // "rgb(75, 192, 192)",
-          // "rgb(255, 205, 86)",
-          // "rgb(201, 203, 207)",
-          // "rgb(54, 162, 235)",
         ],
       },
     ],
@@ -92,12 +102,19 @@ const PolarChart = () => {
         },
         angleLines: {
           display: true,
+           color:"gray"
+        },
+        border:{
+          dash:[1,3],
+          color:"wheat"
         },
         grid: {
           display: true,
+          color:"gray"
         },
         pointLabels: {
           display: true,
+          color: "white"
         },
       },
     },
@@ -140,11 +157,13 @@ const BarChart = () => {
         data: activeValue,
         tension: 0.5,
         backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(75, 192, 192)",
-          "rgb(255, 205, 86)",
-          "rgb(201, 203, 207)",
-          "rgb(54, 162, 235)",
+          "#EF6B6B",
+          "#61CDBB",
+          "#FAC76E",
+          "#C2528B",
+          "#0396A6",
+          "#5F50A9",
+          "#8F3519",
         ],
         fill: false,
       },
@@ -159,18 +178,33 @@ const BarChart = () => {
         title: {
           display: true,
           text: "Types of Activity",
+          color: "white"
         },
         grid: {
           display: false,
         },
+        ticks: {
+          autoSkip: false,
+         color: "white"
+       }
       },
       y: {
         title: {
           display: true,
           text: "Count of Activity",
+          color: "white"
         },
-        border: {
-          dash: [5, 5],
+        ticks: {
+          autoSkip: false,
+         color: "white"
+       },
+        border:{
+          dash:[5, 5],
+          color:"wheat"
+        },
+        grid: {
+          display: true,
+          color:"gray"
         },
       },
     },
@@ -199,7 +233,7 @@ const BarChart = () => {
   };
   return (
     <>
-      <Box mt={2} mr={2}>
+      <Box mt={2} mr={4}>
         <Bar data={data2} options={options2} style={{ height: "50vh" }} />
       </Box>
     </>

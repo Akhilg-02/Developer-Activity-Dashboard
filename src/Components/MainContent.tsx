@@ -7,6 +7,7 @@ import {
   styled,
   InputLabel,
   Box,
+  Typography,
   
 } from "@mui/material";
 import { useActivityContext } from "./Context/ActivityProvider";
@@ -18,28 +19,49 @@ import RecentActivity from "./RecentActivityTableContent";
 const CustomOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: 'red', // Default border color
-      borderRadius: '20px', // Custom border radius
+      borderColor: 'red', 
+      borderRadius: '20px',
     }
-    // ,
-    // '&:hover fieldset': {
-    //   borderColor: 'green', // Border color on hover
-    // },
-    // '&.Mui-focused fieldset': {
-    //   borderColor: 'red', // Border color when focused
-    // },
   },
 }));
 
+const selectUser={
+  color: "white",
+  '.MuiOutlinedInput-notchedOutline': {
+    borderColor: 'rgba(228, 219, 233, 0.25)',
+  },
+  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: '#C2528B',
+  },
+  '.MuiSvgIcon-root ': {
+    fill: "white !important",
+  }
+}
+
 const MainContent = () => {
-  const { data, selectedName, selectedData, handleChange } = useActivityContext();
+  const { data, selectedName, selectedData,setSelectedName,setSelectedData} = useActivityContext();
+
+  const handleChange = (event) => {
+    const name = event.target.value;
+    setSelectedName(name);
+
+    if (data && data.rows) {
+      const userData = data.rows.find((row) => row.name === name);
+      setSelectedData(userData);
+    } else {
+      console.log('Data is not yet available');
+    }
+  };
 
 
   return (
     <>
+    <Box>
+    <Typography variant="h3" style={{ marginLeft: "2%", color: "violet" }}> Developers Activity Highlights</Typography>
+    </Box>
     <Box style={{marginLeft:"82%"}}>
       <FormControl variant="outlined" style={{ minWidth: 120 }}>
-        <InputLabel id="name-select-label" style={{color:"white"}}>Select User</InputLabel>
+        <InputLabel id="name-select-label" style={{color:"white"}}>Select Developer</InputLabel>
         <Select
           placeholder="Select the User"
           labelId="name-select-label"
@@ -47,29 +69,9 @@ const MainContent = () => {
           value={selectedName}
           onChange={handleChange}
           input={<CustomOutlinedInput label="Select User" />}
-          sx={{
-            color: "white",
-            '.MuiOutlinedInput-notchedOutline': {
-              //borderColor: 'rgba(228, 219, 233, 0.25)',
-              borderColor: 'rgba(228, 219, 233, 0.25)',
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-             // borderColor: 'rgba(228, 219, 233, 0.25)',
-              borderColor: '#C2528B',
-            },
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              //borderColor: 'rgba(228, 219, 233, 0.25)',
-              // borderColor: 'yellow',
-            },
-            '.MuiSvgIcon-root ': {
-              fill: "white !important",
-            }
-          }}
+          sx={selectUser}
          
         >
-          {/* <MenuItem value={row.name}>
-            <em>None</em>
-          </MenuItem> */}
           {data &&
             data.rows &&
             data.rows.map((row) => (

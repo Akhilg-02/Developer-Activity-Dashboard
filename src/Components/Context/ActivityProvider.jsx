@@ -17,20 +17,10 @@ export const ActivityProvider = ({ children }) => {
     }
   }, [data]);
 
-  const handleChange = (event) => {
-    const name = event.target.value;
-    setSelectedName(name);
 
-    if (data && data.rows) {
-      const userData = data.rows.find((row) => row.name === name);
-      setSelectedData(userData);
-    } else {
-      console.log('Data is not yet available');
-    }
-  };
 
   return (
-    <ActivityContext.Provider value={{ data, selectedName, selectedData, handleChange }}>
+    <ActivityContext.Provider value={{ data, selectedName, selectedData,setSelectedName,setSelectedData }}>
       {children}
     </ActivityContext.Provider>
   );

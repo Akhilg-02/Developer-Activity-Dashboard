@@ -1,4 +1,4 @@
-import { colors, Grid, Paper, Typography } from "@mui/material";
+import { FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Paper, Select, styled, Typography } from "@mui/material";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -12,6 +12,7 @@ import {
   PointElement
 } from "chart.js/auto";
 import { useActivityContext } from "../Context/ActivityProvider";
+import { useState } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +24,31 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+const CustomOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: 'red', 
+      borderRadius: '20px',
+    }
+  },
+}));
+
+
+const selctField = {
+  color: "white",
+  '.MuiOutlinedInput-notchedOutline': {
+    borderColor: 'rgba(228, 219, 233, 0.25)',
+  },
+  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: '#C2528B',
+  },
+  '&:hover .MuiOutlinedInput-notchedOutline': {
+  },
+  '.MuiSvgIcon-root ': {
+    fill: "white !important",
+  }
+}
 
 const DateWiseChart = () => {
   const { selectedData } = useActivityContext();
@@ -55,23 +81,28 @@ const DateWiseChart = () => {
     return acc;
   }, []);
 
-  const datasets = labels.map((labelInfo) => ({
+
+  const [selectedLines, setSelectedLines] = useState([]);
+
+  const handleChange = (event) => {
+    const { value } = event.target;
+    setSelectedLines(value === 'none' ? [] : [value]);
+  };
+
+
+  const datasets = labels
+  .map((labelInfo) => ({
     label: labelInfo.label, 
     data: getCountsForLabel(labelInfo.label),
     borderColor: labelInfo.borderColor,
-    fill: false,
-    borderWidth: 2,
-    pointRadius: 3,
-    pointHoverRadius: 5,
-    showLine: true,
+    hidden: selectedLines.length > 0 && !selectedLines.includes(labelInfo.label),
   }));
 
   const lineChartsData = {
     labels: dates,
     datasets: datasets,
     fill: false,
-    borderColor: 'rgb(75, 192, 185)',
-    tension: 0.1
+    tension: 0.4
   };
 
   const options = {
@@ -80,24 +111,35 @@ const DateWiseChart = () => {
         title: {
           display: true,
           text: "Date's",
+          color: "white"
         },
         grid: {
           display: false,
         },
         ticks: {
-          autoSkip: false,
-          maxRotation: 80, 
-          minRotation: 80, 
+           autoSkip: false,
+          // maxRotation: 80, 
+          // minRotation: 80, 
+          color: "white"
         }
       },
       y: {
         title: {
           display: true,
-          text: "Count's"
+          text: "Count's",
+          color: 'white', 
+        },
+        ticks: {
+          beginAtZero: true,
+          color: 'white', 
         },
         border:{
           dash:[5, 5],
-          //color:"white"
+          color:"wheat"
+        },
+        grid: {
+          display: true,
+          color:"gray"
         },
       }
     },
@@ -109,24 +151,31 @@ const DateWiseChart = () => {
   };
   return (
     <>
-    <Grid item>
-      <Paper elevation={3} style={{ padding: "12px", borderRadius:"20px", backgroundColor:"rgb(167 60 243 / 10%)"}}>
-       <Typography variant="h6" style={{marginLeft:"2%"}}>Day Wise Activity</Typography>
-       <br />
-        <Line options={options} data={lineChartsData} style={{height:"250vh"}} />
+ <Grid item>
+      <Paper elevation={3} style={{ padding: "12px", borderRadius: "20px", backgroundColor: "rgb(167 60 243 / 10%)" }}>
+        <Typography variant="h6" style={{ marginLeft: "2%", color: "violet" }}>Day wise Activity</Typography>
+        <br />
+        <FormControl sx={{marginLeft:"85%", width:"13%"}}>
+          <InputLabel sx={{color:"white"}}>Select Request</InputLabel>
+          <Select
+            input={<CustomOutlinedInput label="Select User" />}
+            onChange={handleChange}
+            value={selectedLines.length === 0 ? 'none' : selectedLines[0]}
+            sx={selctField}
+          >
+            <MenuItem value="none">None</MenuItem>
+            {labels.map(labelInfo => (
+              <MenuItem key={labelInfo.label} value={labelInfo.label}>{labelInfo.label}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Line options={options} data={lineChartsData} style={{ height: "60vh" }} />
       </Paper>
     </Grid>
+    
     </>
   );
 };
-
-{/* <Grid item xs={12}>eight:"100vh"
-      <Paper elevation={3} style={{ padding: "12px", width: "60%", borderRadius:"20px"}}>
-       <Typography variant="h6">Day Wise Activity</Typography>
-        <Line options={options} data={lineChartsData} style={{height:"150vh"}} />
-      </Paper>
-    </Grid> */}
-
 
 
 export default DateWiseChart;

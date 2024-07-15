@@ -17,7 +17,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 const CircleBox = styled(Box)({
   width: 90,
   height: 90,
-  backgroundColor: "black",//#0e1d34,#91B9DD
+  backgroundColor: "white",//#0e1d34,#91B9DD
   borderRadius: "50%",
   display: "flex",
   justifyContent: "center",
@@ -39,7 +39,6 @@ const RequestGrids
     <>
       <Grid item xs={12}>
         <Box style={{ padding: "12px"}}>
-          {/* <Typography variant="h6" style={{marginLeft:"5%", }}>Total Activity</Typography> */}
           <Grid container spacing={1}>
             {selectedData.totalActivity.slice(0, 4).map((activity, index) => (
               <Grid item xs={12} sm={6} md={3} lg={12} key={index}>
@@ -47,7 +46,8 @@ const RequestGrids
                   style={{
                     margin: "8px",
                     borderRadius: "20px",
-                    display: "flex",
+                    display: "flex",//#a7a7a7
+                    backgroundColor:"rgb(167 60 243 / 10%)"
                   }}
                 >
                   <CardContent>
@@ -57,9 +57,9 @@ const RequestGrids
                   </CardContent>
                   <CardContent>
                     <Box mt={2} ml={8}>
-                    <Typography sx={{color:"#a7a7a7"}} variant="h5">{activity.name}</Typography>
+                    <Typography sx={{ color:"violet"}} variant="h5">{activity.name} <EastIcon/></Typography>
                     <br />
-                    <Typography variant="h6">{activity.value}</Typography>
+                    <Typography variant="h6" sx={{ color:"white"}} >{activity.value}</Typography>
                     </Box>
                   </CardContent>
                 </Card>
